@@ -10,20 +10,20 @@
 #include <conio.h>
 #include <vector>
 
-struct vec3{ float x, y, z; };
-struct poly{int idx[3]; bool hide;};
+struct vec3{ float x, y, z; };			//좌표
+struct poly{int idx[3];};				//면
 
-struct mesh
+struct mesh								//매쉬 정보
 {
-	std::vector<vec3*> vertex;
-	std::vector<poly*> polygon;
-	vec3 position;
-	vec3 rotation;
+	std::vector<vec3*> vertex;			//점 정보
+	std::vector<poly*> polygon;			//면 정보
+	vec3 position;						//위치
+	vec3 rotation;						//회전값
 };
 
-mesh m;
-vec3 camPos;
-float fov;
+std::vector<mesh*> m;					//물체
+vec3 camPos;							//카메라 위치
+float fov;								//카메라 FOV
 
 COLORREF COLOR = RGB(15, 255, 15);
 
@@ -40,129 +40,137 @@ void main()
 	camPos.y = 0;
 	camPos.z = -10;
 
-	m.position.x = 0;
-	m.position.y = 0;
-	m.position.z = 5;
+	mesh* tm = new mesh;
+	tm->position.x = 0;
+	tm->position.y = 0;
+	tm->position.z = 5;
 
+	//점 추가
 	vec3* ve;
 	ve = new vec3;
 	ve->x = -1;
 	ve->y = 1;
 	ve->z = -1;
-	m.vertex.insert(m.vertex.end(), ve);
+	tm->vertex.insert(tm->vertex.end(), ve);
 	ve = new vec3;
 	ve->x = 1;
 	ve->y = 1;
 	ve->z = -1;
-	m.vertex.insert(m.vertex.end(), ve);
+	tm->vertex.insert(tm->vertex.end(), ve);
 	ve = new vec3;
 	ve->x = -1;
 	ve->y = -1;
 	ve->z = -1;
-	m.vertex.insert(m.vertex.end(), ve);
+	tm->vertex.insert(tm->vertex.end(), ve);
 	ve = new vec3;
 	ve->x = 1;
 	ve->y = -1;
 	ve->z = -1;
-	m.vertex.insert(m.vertex.end(), ve);
+	tm->vertex.insert(tm->vertex.end(), ve);
 	ve = new vec3;
 	ve->x = -1;
 	ve->y = 1;
 	ve->z = 1;
-	m.vertex.insert(m.vertex.end(), ve);
+	tm->vertex.insert(tm->vertex.end(), ve);
 	ve = new vec3;
 	ve->x = 1;
 	ve->y = 1;
 	ve->z = 1;
-	m.vertex.insert(m.vertex.end(), ve);
+	tm->vertex.insert(tm->vertex.end(), ve);
 	ve = new vec3;
 	ve->x = -1;
 	ve->y = -1;
 	ve->z = 1;
-	m.vertex.insert(m.vertex.end(), ve);
+	tm->vertex.insert(tm->vertex.end(), ve);
 	ve = new vec3;
 	ve->x = 1;
 	ve->y = -1;
 	ve->z = 1;
-	m.vertex.insert(m.vertex.end(), ve);
+	tm->vertex.insert(tm->vertex.end(), ve);
 
+	//물체 생성
 	poly* po;
 	po = new poly;
 	po->idx[0] = 0;
 	po->idx[1] = 1;
 	po->idx[2] = 2;
-	po->hide = false;
-	m.polygon.insert(m.polygon.end(), po);
+	tm->polygon.insert(tm->polygon.end(), po);
 	po = new poly;
 	po->idx[0] = 1;
 	po->idx[1] = 3;
 	po->idx[2] = 2;
-	po->hide = false;
-	m.polygon.insert(m.polygon.end(), po);
+	tm->polygon.insert(tm->polygon.end(), po);
 	po = new poly;
 	po->idx[0] = 4;
 	po->idx[1] = 0;
 	po->idx[2] = 6;
-	po->hide = false;
-	m.polygon.insert(m.polygon.end(), po);
+	tm->polygon.insert(tm->polygon.end(), po);
 	po = new poly;
 	po->idx[0] = 0;
 	po->idx[1] = 2;
 	po->idx[2] = 6;
-	po->hide = false;
-	m.polygon.insert(m.polygon.end(), po);
+	tm->polygon.insert(tm->polygon.end(), po);
 	po = new poly;
 	po->idx[0] = 5;
 	po->idx[1] = 4;
 	po->idx[2] = 6;
-	po->hide = false;
-	m.polygon.insert(m.polygon.end(), po);
+	tm->polygon.insert(tm->polygon.end(), po);
 	po = new poly;
 	po->idx[0] = 7;
 	po->idx[1] = 5;
 	po->idx[2] = 6;
-	po->hide = false;
-	m.polygon.insert(m.polygon.end(), po);
+	tm->polygon.insert(tm->polygon.end(), po);
 	po = new poly;
 	po->idx[0] = 1;
 	po->idx[1] = 5;
 	po->idx[2] = 3;
-	po->hide = false;
-	m.polygon.insert(m.polygon.end(), po);
+	tm->polygon.insert(tm->polygon.end(), po);
 	po = new poly;
 	po->idx[0] = 5;
 	po->idx[1] = 7;
 	po->idx[2] = 3;
-	po->hide = false;
-	m.polygon.insert(m.polygon.end(), po);
+	tm->polygon.insert(tm->polygon.end(), po);
 	po = new poly;
 	po->idx[0] = 4;
 	po->idx[1] = 5;
 	po->idx[2] = 0;
-	po->hide = false;
-	m.polygon.insert(m.polygon.end(), po);
+	tm->polygon.insert(tm->polygon.end(), po);
 	po = new poly;
 	po->idx[0] = 5;
 	po->idx[1] = 1;
 	po->idx[2] = 0;
-	po->hide = false;
-	m.polygon.insert(m.polygon.end(), po);
+	tm->polygon.insert(tm->polygon.end(), po);
 	po = new poly;
 	po->idx[0] = 7;
 	po->idx[1] = 6;
 	po->idx[2] = 2;
-	po->hide = false;
-	m.polygon.insert(m.polygon.end(), po);
+	tm->polygon.insert(tm->polygon.end(), po);
 	po = new poly;
 	po->idx[0] = 3;
 	po->idx[1] = 7;
 	po->idx[2] = 2;
-	po->hide = false;
-	m.polygon.insert(m.polygon.end(), po);
+	tm->polygon.insert(tm->polygon.end(), po);
+	m.insert(m.end(), tm);
+
+	//물체 복제
+	for(int i = 0; i < 30; ++i)
+	{
+		for(int j = 0; j < 2; ++j)
+		{
+			tm = new mesh;
+			memcpy(tm, m.back(), sizeof(mesh));
+			tm->position.x = j * 3;
+			tm->position.z = i * 2;
+			m.insert(m.end(), tm);
+		}
+	}
+
+//	printf("%d / %f / %f\n", m.size(), m[0]->position.x, m[1]->position.x);
 
 	char inT;
 	while(true)
 	{
+		//조작 및 화면 초기화
 		inT = _getch();
 		system("cls");
 		switch (inT)
@@ -191,44 +199,36 @@ void main()
 		default:
 			break;
 		}
-
-		for (int i = 0; i < m.polygon.size(); ++i)
+		
+		//투영
+		for(int c = 0; c < m.size(); ++c)
 		{
-			vec3 point[3];
-			vec3 line[3];
-			bool sethide = true;
+			for (int i = 0; i < m[c]->polygon.size(); ++i)
+			{
+				//화면상의 점 위치 계산
+				vec3 point[3];
+				bool sethide = true;
 			
-			for(int j = 0; j < 3; ++j)
-			{
-				line[j].x = point[j].x = atan((m.vertex[m.polygon[i]->idx[j]]->x + m.position.x - camPos.x) / (m.vertex[m.polygon[i]->idx[j]]->z + m.position.z - camPos.z));
-				line[j].y = point[j].y = atan((m.vertex[m.polygon[i]->idx[j]]->y + m.position.y - camPos.y) / (m.vertex[m.polygon[i]->idx[j]]->z + m.position.z - camPos.z));
-				if(!(point[j].x > fov * 0.5f || point[j].x < -fov * 0.5f) && !(point[j].y > fov * 0.5f || point[j].y < -fov * 0.5f))
-					sethide = false;
-				point[j].x /= fov / SCREENW;
-				point[j].y /= fov / SCREENW;
-//				printf("%f / %f / %f\n", point[j].x, point[j].y, fov * 0.5f);
-			}
-			if(sethide)
-			{
-//				printf("hide\n");
-				continue;
-			}
-			for(int j = 0; j < 3; ++j)
-			{
-				MoveToEx(mydc, SCREENW * 0.5f + point[j].x, SCREENH * 0.5f - point[j].y, 0);
-				LineTo(mydc, SCREENW * 0.5f + point[j != 2 ? j + 1 : 0].x, SCREENH * 0.5f - point[j != 2 ? j + 1 : 0].y);
+				for(int j = 0; j < 3; ++j)
+				{
+					point[j].x = atan((m[c]->vertex[m[c]->polygon[i]->idx[j]]->x + m[c]->position.x - camPos.x) / (m[c]->vertex[m[c]->polygon[i]->idx[j]]->z + m[c]->position.z - camPos.z));
+					point[j].y = atan((m[c]->vertex[m[c]->polygon[i]->idx[j]]->y + m[c]->position.y - camPos.y) / (m[c]->vertex[m[c]->polygon[i]->idx[j]]->z + m[c]->position.z - camPos.z));
+					if(!(point[j].x > fov * 0.5f || point[j].x < -fov * 0.5f) && !(point[j].y > fov * 0.5f || point[j].y < -fov * 0.5f))
+						sethide = false;
+					point[j].x /= fov / SCREENW;
+					point[j].y /= fov / SCREENW;
+				}
+				//화면 바깥으로 나가면 안그림
+				if(sethide)
+					continue;
+				//계산된 점 위치 기반으로 투영
+				for(int j = 0; j < 3; ++j)
+				{
+					MoveToEx(mydc, SCREENW * 0.5f + point[j].x, SCREENH * 0.5f - point[j].y, 0);
+					LineTo(mydc, SCREENW * 0.5f + point[j != 2 ? j + 1 : 0].x, SCREENH * 0.5f - point[j != 2 ? j + 1 : 0].y);
+				}
 			}
 		}
 	}
-
-	for (int i = 0; i < m.polygon.size(); ++i)
-		if (m.polygon[i])
-			delete m.polygon[i];
-	m.polygon.clear();
-	for (int i = 0; i < m.vertex.size(); ++i)
-		if (m.vertex[i])
-			delete m.vertex[i];
-	m.vertex.clear();
-
 	std::cin.ignore();
 }
