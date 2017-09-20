@@ -153,21 +153,22 @@ void main()
 	m.insert(m.end(), tm);
 
 	//물체 복제
-	for(int i = 0; i < 30; ++i)
-	{
-		for(int j = 0; j < 2; ++j)
-		{
-			tm = new mesh;
-			memcpy(tm, m.back(), sizeof(mesh));
-			tm->position.x = j * 3;
-			tm->position.z = i * 2;
-			m.insert(m.end(), tm);
-		}
-	}
+//	for(int i = 0; i < 1; ++i)
+//	{
+//		for(int j = 0; j < 2; ++j)
+//		{
+//			tm = new mesh;
+//			memcpy(tm, m.back(), sizeof(mesh));
+//			tm->position.x = j * 3;
+//			tm->position.z = i * 2;
+//			m.insert(m.end(), tm);
+//		}
+//	}
 
 //	printf("%d / %f / %f\n", m.size(), m[0]->position.x, m[1]->position.x);
 
 	char inT;
+	int drawcall;
 	while(true)
 	{
 		//조작 및 화면 초기화
@@ -203,31 +204,59 @@ void main()
 		//투영
 		for(int c = 0; c < m.size(); ++c)
 		{
+			vec3* point = new vec3[m[c]->vertex.size()];
+
+			for (int i = 0; i < m[c]->vertex.size(); ++i)
+			{
+				point[i].x = atan((m[c]->vertex[i]->x + m[c]->position.x - camPos.x) / (m[c]->vertex[i]->z + m[c]->position.z - camPos.z));
+				point[i].y = atan((m[c]->vertex[i]->y + m[c]->position.y - camPos.y) / (m[c]->vertex[i]->z + m[c]->position.z - camPos.z));
+//				if (!(point[i].x > fov * 0.5f || point[j].x < -fov * 0.5f) && !(point[j].y > fov * 0.5f || point[j].y < -fov * 0.5f))
+//					sethide = false;
+				point[i].x /= fov / SCREENW * 0.5;// + SCREENW * 0.5;
+				point[i].y /= fov / SCREENW * 0.5;// + SCREENH * 0.5;
+			}
+
+//			for (int i = 0; i < m[c]->polygon.size(); ++i)
+//			{
+//				//화면상의 점 위치 계산
+////				vec3 point[3];
+//				bool sethide = true;
+//			
+//				for(int j = 0; j < 3; ++j)
+//				{
+//					point[j].x = atan((m[c]->vertex[m[c]->polygon[i]->idx[j]]->x + m[c]->position.x - camPos.x) / (m[c]->vertex[m[c]->polygon[i]->idx[j]]->z + m[c]->position.z - camPos.z));
+//					point[j].y = atan((m[c]->vertex[m[c]->polygon[i]->idx[j]]->y + m[c]->position.y - camPos.y) / (m[c]->vertex[m[c]->polygon[i]->idx[j]]->z + m[c]->position.z - camPos.z));
+//					if(!(point[j].x > fov * 0.5f || point[j].x < -fov * 0.5f) && !(point[j].y > fov * 0.5f || point[j].y < -fov * 0.5f))
+//						sethide = false;
+//					point[j].x /= fov / SCREENW;
+//					point[j].y /= fov / SCREENW;
+//				}
+//				//화면 바깥으로 나가면 안그림
+//				if(sethide)
+//					continue;
+				//계산된 점 위치 기반으로 투영
 			for (int i = 0; i < m[c]->polygon.size(); ++i)
 			{
-				//화면상의 점 위치 계산
-				vec3 point[3];
-				bool sethide = true;
-			
-				for(int j = 0; j < 3; ++j)
+				vec3 f, t;
+				//노말 판단한다음 그릴지 말지 정하게 해야됨
+
+				++drawcall;
+
+				for (int j = 0; j < 3; ++j)
 				{
-					point[j].x = atan((m[c]->vertex[m[c]->polygon[i]->idx[j]]->x + m[c]->position.x - camPos.x) / (m[c]->vertex[m[c]->polygon[i]->idx[j]]->z + m[c]->position.z - camPos.z));
-					point[j].y = atan((m[c]->vertex[m[c]->polygon[i]->idx[j]]->y + m[c]->position.y - camPos.y) / (m[c]->vertex[m[c]->polygon[i]->idx[j]]->z + m[c]->position.z - camPos.z));
-					if(!(point[j].x > fov * 0.5f || point[j].x < -fov * 0.5f) && !(point[j].y > fov * 0.5f || point[j].y < -fov * 0.5f))
-						sethide = false;
-					point[j].x /= fov / SCREENW;
-					point[j].y /= fov / SCREENW;
-				}
-				//화면 바깥으로 나가면 안그림
-				if(sethide)
-					continue;
-				//계산된 점 위치 기반으로 투영
-				for(int j = 0; j < 3; ++j)
-				{
-					MoveToEx(mydc, SCREENW * 0.5f + point[j].x, SCREENH * 0.5f - point[j].y, 0);
-					LineTo(mydc, SCREENW * 0.5f + point[j != 2 ? j + 1 : 0].x, SCREENH * 0.5f - point[j != 2 ? j + 1 : 0].y);
+
+					f.x = point[m[c]->polygon[i]->idx[j]].x;
+					f.y = point[m[c]->polygon[i]->idx[j]].y;
+					t.x = point[m[c]->polygon[i]->idx[j == 2 ? 0 : j + 1]].x;
+					t.y = point[m[c]->polygon[i]->idx[j == 2 ? 0 : j + 1]].y;
+					MoveToEx(mydc, SCREENW * 0.5f + f.x, SCREENH * 0.5f - f.y, 0);
+					LineTo(mydc, SCREENW * 0.5f + t.x, SCREENH * 0.5f - t.y);
+					
+					Sleep(1);
+					printf("%f / %f / %f / %f\n", f.x, f.y, t.x, t.y);
 				}
 			}
+			delete point;
 		}
 	}
 	std::cin.ignore();

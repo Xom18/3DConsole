@@ -1,13 +1,15 @@
 ﻿  main.cpp
 main.cpp(37): warning C4305: '=' : 'double'에서 'float'(으)로 잘립니다.
-main.cpp(162): warning C4244: '=' : 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-main.cpp(163): warning C4244: '=' : 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-main.cpp(204): warning C4018: '<' : signed 또는 unsigned가 일치하지 않습니다.
-main.cpp(206): warning C4018: '<' : signed 또는 unsigned가 일치하지 않습니다.
-main.cpp(227): warning C4244: '인수' : 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-main.cpp(227): warning C4244: '인수' : 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-main.cpp(228): warning C4244: '인수' : 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-main.cpp(228): warning C4244: '인수' : 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+main.cpp(205): warning C4018: '<' : signed 또는 unsigned가 일치하지 않습니다.
+main.cpp(209): warning C4018: '<' : signed 또는 unsigned가 일치하지 않습니다.
+main.cpp(215): warning C4244: '/=' : 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+main.cpp(216): warning C4244: '/=' : 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+main.cpp(238): warning C4018: '<' : signed 또는 unsigned가 일치하지 않습니다.
+main.cpp(255): warning C4244: '인수' : 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+main.cpp(255): warning C4244: '인수' : 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+main.cpp(256): warning C4244: '인수' : 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+main.cpp(256): warning C4244: '인수' : 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   코드를 생성하고 있습니다.
+d:\systemfolder\documents\github\3dconsole\3dconsole\3dconsole\main.cpp(246): warning C4700: 초기화되지 않은 'drawcall' 지역 변수를 사용했습니다.
   코드를 생성했습니다.
-  3DConsole.vcxproj -> F:\System\Documents\GitHub\3DConsole\3DConsole\Release\3DConsole.exe
+  3DConsole.vcxproj -> D:\SystemFolder\Documents\GitHub\3DConsole\3DConsole\Release\3DConsole.exe
