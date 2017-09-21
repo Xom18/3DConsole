@@ -63,7 +63,7 @@ void main()
 	HPEN pen = CreatePen(PS_SOLID, 1, COLOR);
 	SelectObject(mydc, pen);
 
-	fov = 45.f * D2R;
+	fov = 60.f * D2R;
 	
 	camPos.x = 0;
 	camPos.y = 0;
@@ -82,7 +82,7 @@ void main()
 	tm->vertex.insert(tm->vertex.end(), vec3(-1, -1, 1));
 	tm->vertex.insert(tm->vertex.end(), vec3(1, -1, 1));
 
-	//물체 생성
+	//면 생성
 	tm->polygon.insert(tm->polygon.end(), poly(0, 1, 2));
 	tm->polygon.insert(tm->polygon.end(), poly(1, 3, 2));
 	tm->polygon.insert(tm->polygon.end(), poly(4, 0, 6));
@@ -161,7 +161,8 @@ void main()
 			{
 				point[i].x = atan((m[c]->vertex[i].x + m[c]->position.x - camPos.x) / (m[c]->vertex[i].z + m[c]->position.z - camPos.z));
 				point[i].y = atan((m[c]->vertex[i].y + m[c]->position.y - camPos.y) / (m[c]->vertex[i].z + m[c]->position.z - camPos.z));
-				point[i] /= fov / SCREENW * 0.5;
+				printf("%f / %f\n", point[i].x * R2D, fov * R2D);
+				point[i] /= fov / SCREENW;
 			}
 			//계산된 점 위치 기반으로 투영
 			for (int i = 0; i < m[c]->polygon.size(); ++i)
