@@ -186,8 +186,6 @@ void main()
 		}
 	}
 	for(int i = 0; i < m.size(); ++i)
-	{
 		delete m[i];
-	}
 	std::cin.ignore();
 }
