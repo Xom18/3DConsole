@@ -10,13 +10,41 @@
 #include <conio.h>
 #include <vector>
 
-struct vec3{ float x, y, z; };			//좌표
-struct poly{int idx[3];};				//면
+struct vec3			//좌표
+{ 
+	float x, y, z;
+
+	vec3(double _x = 0, double _y = 0, double _z = 0){ x = _x; y = _y; z = _z; }
+	vec3 operator +(vec3 inV){ vec3 t(0, 0, 0); t.x = x + inV.x; t.y = y + inV.y; t.z = z + inV.z; return t; }
+	vec3 operator -(vec3 inV){ vec3 t(0, 0, 0); t.x = x - inV.x; t.y = y - inV.y; t.z = z - inV.z; return t; }
+	vec3 operator *(vec3 inV){ vec3 t(0, 0, 0); t.x = x * inV.x; t.y = y * inV.y; t.z = z * inV.z; return t; }
+	vec3 operator /(vec3 inV){ vec3 t(0, 0, 0); t.x = x / inV.x; t.y = y / inV.y; t.z = z / inV.z; return t; }
+
+	void operator +=(vec3 inV){ x += inV.x; y += inV.y; z += inV.z; }
+	void operator -=(vec3 inV){ x -= inV.x; y -= inV.y; z -= inV.z; }
+	void operator *=(vec3 inV){ x *= inV.x; y *= inV.y; z *= inV.z; }
+	void operator /=(vec3 inV){ x /= inV.x; y /= inV.y; z /= inV.z; }
+
+	vec3 operator +(double inV){ vec3 t(0, 0, 0); t.x = x + inV; t.y = y + inV; t.z = z + inV; return t; }
+	vec3 operator -(double inV){ vec3 t(0, 0, 0); t.x = x - inV; t.y = y - inV; t.z = z - inV; return t; }
+	vec3 operator *(double inV){ vec3 t(0, 0, 0); t.x = x * inV; t.y = y * inV; t.z = z * inV; return t; }
+	vec3 operator /(double inV){ vec3 t(0, 0, 0); t.x = x / inV; t.y = y / inV; t.z = z / inV; return t; }
+
+	void operator +=(double inV){ x += inV; y += inV; z += inV; }
+	void operator -=(double inV){ x -= inV; y -= inV; z -= inV; }
+	void operator *=(double inV){ x *= inV; y *= inV; z *= inV; }
+	void operator /=(double inV){ x /= inV; y /= inV; z /= inV; }
+};
+struct poly			//면
+{
+	int idx[3];
+	poly(int _x = 0, int _y = 0, int _z = 0){ idx[0] = _x; idx[1] = _y; idx[2] = _z; }
+};				
 
 struct mesh								//매쉬 정보
 {
-	std::vector<vec3*> vertex;			//점 정보
-	std::vector<poly*> polygon;			//면 정보
+	std::vector<vec3> vertex;			//점 정보
+	std::vector<poly> polygon;			//면 정보
 	vec3 position;						//위치
 	vec3 rotation;						//회전값
 };
@@ -41,115 +69,31 @@ void main()
 	camPos.z = -10;
 
 	mesh* tm = new mesh;
-	tm->position.x = 0;
-	tm->position.y = 0;
-	tm->position.z = 5;
+	tm->position = vec3(0, 0, 5);
 
 	//점 추가
-	vec3* ve;
-	ve = new vec3;
-	ve->x = -1;
-	ve->y = 1;
-	ve->z = -1;
-	tm->vertex.insert(tm->vertex.end(), ve);
-	ve = new vec3;
-	ve->x = 1;
-	ve->y = 1;
-	ve->z = -1;
-	tm->vertex.insert(tm->vertex.end(), ve);
-	ve = new vec3;
-	ve->x = -1;
-	ve->y = -1;
-	ve->z = -1;
-	tm->vertex.insert(tm->vertex.end(), ve);
-	ve = new vec3;
-	ve->x = 1;
-	ve->y = -1;
-	ve->z = -1;
-	tm->vertex.insert(tm->vertex.end(), ve);
-	ve = new vec3;
-	ve->x = -1;
-	ve->y = 1;
-	ve->z = 1;
-	tm->vertex.insert(tm->vertex.end(), ve);
-	ve = new vec3;
-	ve->x = 1;
-	ve->y = 1;
-	ve->z = 1;
-	tm->vertex.insert(tm->vertex.end(), ve);
-	ve = new vec3;
-	ve->x = -1;
-	ve->y = -1;
-	ve->z = 1;
-	tm->vertex.insert(tm->vertex.end(), ve);
-	ve = new vec3;
-	ve->x = 1;
-	ve->y = -1;
-	ve->z = 1;
-	tm->vertex.insert(tm->vertex.end(), ve);
+	tm->vertex.insert(tm->vertex.end(), vec3(-1, 1, -1));
+	tm->vertex.insert(tm->vertex.end(), vec3(1, 1, -1));
+	tm->vertex.insert(tm->vertex.end(), vec3(-1, -1, -1));
+	tm->vertex.insert(tm->vertex.end(), vec3(1, -1, -1));
+	tm->vertex.insert(tm->vertex.end(), vec3(-1, 1, 1));
+	tm->vertex.insert(tm->vertex.end(), vec3(1, 1, 1));
+	tm->vertex.insert(tm->vertex.end(), vec3(-1, -1, 1));
+	tm->vertex.insert(tm->vertex.end(), vec3(1, -1, 1));
 
 	//물체 생성
-	poly* po;
-	po = new poly;
-	po->idx[0] = 0;
-	po->idx[1] = 1;
-	po->idx[2] = 2;
-	tm->polygon.insert(tm->polygon.end(), po);
-	po = new poly;
-	po->idx[0] = 1;
-	po->idx[1] = 3;
-	po->idx[2] = 2;
-	tm->polygon.insert(tm->polygon.end(), po);
-	po = new poly;
-	po->idx[0] = 4;
-	po->idx[1] = 0;
-	po->idx[2] = 6;
-	tm->polygon.insert(tm->polygon.end(), po);
-	po = new poly;
-	po->idx[0] = 0;
-	po->idx[1] = 2;
-	po->idx[2] = 6;
-	tm->polygon.insert(tm->polygon.end(), po);
-	po = new poly;
-	po->idx[0] = 5;
-	po->idx[1] = 4;
-	po->idx[2] = 6;
-	tm->polygon.insert(tm->polygon.end(), po);
-	po = new poly;
-	po->idx[0] = 7;
-	po->idx[1] = 5;
-	po->idx[2] = 6;
-	tm->polygon.insert(tm->polygon.end(), po);
-	po = new poly;
-	po->idx[0] = 1;
-	po->idx[1] = 5;
-	po->idx[2] = 3;
-	tm->polygon.insert(tm->polygon.end(), po);
-	po = new poly;
-	po->idx[0] = 5;
-	po->idx[1] = 7;
-	po->idx[2] = 3;
-	tm->polygon.insert(tm->polygon.end(), po);
-	po = new poly;
-	po->idx[0] = 4;
-	po->idx[1] = 5;
-	po->idx[2] = 0;
-	tm->polygon.insert(tm->polygon.end(), po);
-	po = new poly;
-	po->idx[0] = 5;
-	po->idx[1] = 1;
-	po->idx[2] = 0;
-	tm->polygon.insert(tm->polygon.end(), po);
-	po = new poly;
-	po->idx[0] = 7;
-	po->idx[1] = 6;
-	po->idx[2] = 2;
-	tm->polygon.insert(tm->polygon.end(), po);
-	po = new poly;
-	po->idx[0] = 3;
-	po->idx[1] = 7;
-	po->idx[2] = 2;
-	tm->polygon.insert(tm->polygon.end(), po);
+	tm->polygon.insert(tm->polygon.end(), poly(0, 1, 2));
+	tm->polygon.insert(tm->polygon.end(), poly(1, 3, 2));
+	tm->polygon.insert(tm->polygon.end(), poly(4, 0, 6));
+	tm->polygon.insert(tm->polygon.end(), poly(0, 2, 6));
+	tm->polygon.insert(tm->polygon.end(), poly(5, 4, 6));
+	tm->polygon.insert(tm->polygon.end(), poly(7, 5, 6));
+	tm->polygon.insert(tm->polygon.end(), poly(1, 5, 3));
+	tm->polygon.insert(tm->polygon.end(), poly(5, 7, 3));
+	tm->polygon.insert(tm->polygon.end(), poly(4, 5, 0));
+	tm->polygon.insert(tm->polygon.end(), poly(5, 1, 0));
+	tm->polygon.insert(tm->polygon.end(), poly(7, 6, 2));
+	tm->polygon.insert(tm->polygon.end(), poly(3, 7, 2));
 	m.insert(m.end(), tm);
 
 	//물체 복제
@@ -164,8 +108,6 @@ void main()
 //			m.insert(m.end(), tm);
 //		}
 //	}
-
-//	printf("%d / %f / %f\n", m.size(), m[0]->position.x, m[1]->position.x);
 
 	char inT;
 	int drawcall;
@@ -205,36 +147,21 @@ void main()
 		for(int c = 0; c < m.size(); ++c)
 		{
 			vec3* point = new vec3[m[c]->vertex.size()];
+			vec3* fnorm = new vec3[m[c]->polygon.size()];
 
 			for (int i = 0; i < m[c]->vertex.size(); ++i)
 			{
-				point[i].x = atan((m[c]->vertex[i]->x + m[c]->position.x - camPos.x) / (m[c]->vertex[i]->z + m[c]->position.z - camPos.z));
-				point[i].y = atan((m[c]->vertex[i]->y + m[c]->position.y - camPos.y) / (m[c]->vertex[i]->z + m[c]->position.z - camPos.z));
-//				if (!(point[i].x > fov * 0.5f || point[j].x < -fov * 0.5f) && !(point[j].y > fov * 0.5f || point[j].y < -fov * 0.5f))
-//					sethide = false;
-				point[i].x /= fov / SCREENW * 0.5;// + SCREENW * 0.5;
-				point[i].y /= fov / SCREENW * 0.5;// + SCREENH * 0.5;
+				point[i].x = atan((m[c]->vertex[i].x + m[c]->position.x - camPos.x) / (m[c]->vertex[i].z + m[c]->position.z - camPos.z));
+				point[i].y = atan((m[c]->vertex[i].y + m[c]->position.y - camPos.y) / (m[c]->vertex[i].z + m[c]->position.z - camPos.z));
+				point[i] /= fov / SCREENW * 0.5;
 			}
 
-//			for (int i = 0; i < m[c]->polygon.size(); ++i)
-//			{
-//				//화면상의 점 위치 계산
-////				vec3 point[3];
-//				bool sethide = true;
-//			
-//				for(int j = 0; j < 3; ++j)
-//				{
-//					point[j].x = atan((m[c]->vertex[m[c]->polygon[i]->idx[j]]->x + m[c]->position.x - camPos.x) / (m[c]->vertex[m[c]->polygon[i]->idx[j]]->z + m[c]->position.z - camPos.z));
-//					point[j].y = atan((m[c]->vertex[m[c]->polygon[i]->idx[j]]->y + m[c]->position.y - camPos.y) / (m[c]->vertex[m[c]->polygon[i]->idx[j]]->z + m[c]->position.z - camPos.z));
-//					if(!(point[j].x > fov * 0.5f || point[j].x < -fov * 0.5f) && !(point[j].y > fov * 0.5f || point[j].y < -fov * 0.5f))
-//						sethide = false;
-//					point[j].x /= fov / SCREENW;
-//					point[j].y /= fov / SCREENW;
-//				}
-//				//화면 바깥으로 나가면 안그림
-//				if(sethide)
-//					continue;
-				//계산된 점 위치 기반으로 투영
+			for(int i = 0; i < m[c]->polygon.size(); ++i)
+			{
+
+			}
+
+			//계산된 점 위치 기반으로 투영
 			for (int i = 0; i < m[c]->polygon.size(); ++i)
 			{
 				vec3 f, t;
@@ -245,19 +172,22 @@ void main()
 				for (int j = 0; j < 3; ++j)
 				{
 
-					f.x = point[m[c]->polygon[i]->idx[j]].x;
-					f.y = point[m[c]->polygon[i]->idx[j]].y;
-					t.x = point[m[c]->polygon[i]->idx[j == 2 ? 0 : j + 1]].x;
-					t.y = point[m[c]->polygon[i]->idx[j == 2 ? 0 : j + 1]].y;
+					f = point[m[c]->polygon[i].idx[j]];
+					t = point[m[c]->polygon[i].idx[j == 2 ? 0 : j + 1]];
 					MoveToEx(mydc, SCREENW * 0.5f + f.x, SCREENH * 0.5f - f.y, 0);
 					LineTo(mydc, SCREENW * 0.5f + t.x, SCREENH * 0.5f - t.y);
 					
-					Sleep(1);
+//					Sleep(1);
 					printf("%f / %f / %f / %f\n", f.x, f.y, t.x, t.y);
 				}
 			}
 			delete point;
+			delete fnorm;
 		}
+	}
+	for(int i = 0; i < m.size(); ++i)
+	{
+		delete m[i];
 	}
 	std::cin.ignore();
 }
