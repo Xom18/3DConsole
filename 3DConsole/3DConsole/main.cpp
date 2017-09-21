@@ -38,6 +38,7 @@ struct vec3			//좌표
 struct poly			//면
 {
 	int idx[3];
+//	vec3 norm;
 	poly(int _x = 0, int _y = 0, int _z = 0){ idx[0] = _x; idx[1] = _y; idx[2] = _z; }
 };				
 
@@ -62,7 +63,7 @@ void main()
 	HPEN pen = CreatePen(PS_SOLID, 1, COLOR);
 	SelectObject(mydc, pen);
 
-	fov = 45.f * D2R * 0.5f;
+	fov = 45.f * D2R;
 	
 	camPos.x = 0;
 	camPos.y = 0;
@@ -110,7 +111,6 @@ void main()
 //	}
 
 	char inT;
-	int drawcall;
 	while(true)
 	{
 		//조작 및 화면 초기화
@@ -147,7 +147,15 @@ void main()
 		for(int c = 0; c < m.size(); ++c)
 		{
 			vec3* point = new vec3[m[c]->vertex.size()];
-			vec3* fnorm = new vec3[m[c]->polygon.size()];
+
+			//면 노말값 구하기
+			//for(int i = 0; i < m[c]->polygon.size(); ++i)
+			//{
+			//	vec3 tx = m[c]->vertex[m[c]->polygon[i].idx[1]] - m[c]->vertex[m[c]->polygon[i].idx[0]];
+			//	vec3 ty = m[c]->vertex[m[c]->polygon[i].idx[2]] - m[c]->vertex[m[c]->polygon[i].idx[0]];
+			//	tx = vec3(tx.y * ty.z -tx.z * ty.y, tx.z * ty.x - tx.x * ty.z, tx.x * ty.y - tx.y * ty.x);
+			//	m[c]->polygon[i].norm = tx / sqrt(pow(tx.x, 2) + pow(tx.y, 2) + pow(tx.z, 2));
+			//}
 
 			for (int i = 0; i < m[c]->vertex.size(); ++i)
 			{
@@ -155,19 +163,11 @@ void main()
 				point[i].y = atan((m[c]->vertex[i].y + m[c]->position.y - camPos.y) / (m[c]->vertex[i].z + m[c]->position.z - camPos.z));
 				point[i] /= fov / SCREENW * 0.5;
 			}
-
-			for(int i = 0; i < m[c]->polygon.size(); ++i)
-			{
-
-			}
-
 			//계산된 점 위치 기반으로 투영
 			for (int i = 0; i < m[c]->polygon.size(); ++i)
 			{
 				vec3 f, t;
 				//노말 판단한다음 그릴지 말지 정하게 해야됨
-
-				++drawcall;
 
 				for (int j = 0; j < 3; ++j)
 				{
@@ -178,11 +178,10 @@ void main()
 					LineTo(mydc, SCREENW * 0.5f + t.x, SCREENH * 0.5f - t.y);
 					
 //					Sleep(1);
-					printf("%f / %f / %f / %f\n", f.x, f.y, t.x, t.y);
+//					printf("%f / %f / %f / %f / %f / %f / %f\n", camPos.x, camPos.y, camPos.z, f.x, f.y, t.x, t.y);
 				}
 			}
 			delete point;
-			delete fnorm;
 		}
 	}
 	for(int i = 0; i < m.size(); ++i)
